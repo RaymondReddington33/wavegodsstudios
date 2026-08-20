@@ -290,11 +290,11 @@ ul,ol{list-style:none}
 .hero-title .hl-a{display:block}
 .hero-title .hl-b{
   display:block;font-family:var(--punk);font-weight:400;color:var(--red);
-  text-transform:uppercase;letter-spacing:.005em;line-height:.92;
+  text-transform:uppercase;letter-spacing:.005em;line-height:1;
   transform:skewX(-7deg);transform-origin:left bottom;margin-top:.06em
 }
-.hero-title .w{display:inline-block;overflow:hidden;vertical-align:top}
-.hero-title .w > i{display:inline-block;font-style:inherit;transform:translateY(105%);transition:transform .9s var(--out) calc(var(--wi) * 65ms + .15s)}
+.hero-title .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.18em;margin-bottom:-.18em}
+.hero-title .w > i{display:inline-block;font-style:inherit;transform:translateY(125%);transition:transform .9s var(--out) calc(var(--wi) * 65ms + .15s)}
 .ready .hero-title .w > i,.no-js .hero-title .w > i{transform:translateY(0)}
 .hero-lead{color:var(--ink-2);max-width:42ch;font-size:1.02rem;text-shadow:0 1px 24px rgba(8,8,10,.8)}
 .hero-cta{margin-top:1.6rem;display:flex;flex-wrap:wrap;gap:.6rem}
