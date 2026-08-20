@@ -100,6 +100,19 @@ Después, en el repo → **Settings → Pages**:
   reconstruye la web en cada push (útil si editas `src/content.mjs` directamente
   desde la web de GitHub).
 
+### Dos formas de publicar: preview y producción
+
+El generador acepta una variable `BASE` con la subcarpeta desde la que se sirve la web:
+
+| Dónde | Comando | Qué hace |
+|-------|---------|----------|
+| **Preview** en `usuario.github.io/repo` | `BASE=/wavegodsstudios npm run build` | Prefija las rutas absolutas, **no genera `CNAME`** y marca la web como `noindex` para que no compita con el dominio real en Google |
+| **Producción** en el dominio propio | `npm run build` | Rutas desde la raíz, genera `CNAME` e indexable |
+
+Ahora mismo el repo está commiteado en **modo preview**. Cuando quieras pasar al
+dominio propio: configura los DNS (abajo), ejecuta `npm run build` sin `BASE`, y
+commitea — eso restaura el `CNAME` y quita el `noindex`.
+
 ### Dominio propio
 
 El archivo `CNAME` ya contiene `wavegodsstudio.com`. En tu proveedor de DNS:

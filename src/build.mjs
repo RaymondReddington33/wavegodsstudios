@@ -23,6 +23,12 @@ try {
 import { ICONS, SPRITE, LOGO_MARK, plat, esc, jsonld } from './parts.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+/* Subcarpeta desde la que se sirve la web.
+   ''                   -> dominio propio (wavegodsstudio.com)
+   '/wavegodsstudios'   -> usuario.github.io/wavegodsstudios
+   Se cambia con:  BASE=/wavegodsstudios npm run build          */
+const BASE = (globalThis.process?.env?.BASE || '').replace(/\/$/, '');
 const wa = (t) => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(t)}`;
 const NAV = ['media', 'services', 'studio', 'contact'];
 const stars = (n = 5) => `<span class="stars" role="img" aria-label="${n}/5">${ICONS.star.repeat(n)}</span>`;
@@ -37,7 +43,7 @@ function head(t) {
 <title>${esc(t.meta.title)}</title>
 <meta name="description" content="${esc(t.meta.description)}">
 <meta name="keywords" content="${esc(t.meta.keywords)}">
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="robots" content="${BASE ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1'}">
 <meta name="theme-color" content="#08080A">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="${url}">
@@ -131,13 +137,13 @@ function schema(t) {
 }
 
 /* ------------------------------------------------------------------- nav */
-const logo = (t, cls = '') => `<a class="logo ${cls}" href="${t.path}#top" aria-label="${esc(t.a11y.logo)}">
+const logo = (t, cls = '') => `<a class="logo ${cls}" href="${BASE}${t.path}#top" aria-label="${esc(t.a11y.logo)}">
   ${LOGO_MARK}<span class="logo-txt"><b>Wave Gods</b><i>Studio</i></span>
 </a>`;
 
 function nav(t) {
   const items = NAV.map((id) => `<li><a class="nav-link" href="#${id}" data-nav="${id}">${esc(t.nav[id])}</a></li>`).join('');
-  const langLink = (cls) => `<a class="${cls}" href="${t.altPath}" hreflang="${t.altLabel.toLowerCase()}" lang="${t.altLabel.toLowerCase()}" data-lang-switch="${t.altLabel.toLowerCase()}" aria-label="${esc(t.nav.langLabel)}: ${esc(t.altName)}">${t.altLabel}</a>`;
+  const langLink = (cls) => `<a class="${cls}" href="${BASE}${t.altPath}" hreflang="${t.altLabel.toLowerCase()}" lang="${t.altLabel.toLowerCase()}" data-lang-switch="${t.altLabel.toLowerCase()}" aria-label="${esc(t.nav.langLabel)}: ${esc(t.altName)}">${t.altLabel}</a>`;
   return `<header class="nav" id="nav">
   <div class="nav-inner">
     ${logo(t)}
@@ -476,7 +482,7 @@ function footer(t) {
   <div class="wrap foot-bar">
     <p>© <span data-year>2026</span> ${esc(SITE.brand)}. ${esc(t.footer.rights)}</p>
     <p class="foot-note">${esc(t.footer.note)}</p>
-    <a class="foot-lang" href="${t.altPath}" hreflang="${t.altLabel.toLowerCase()}" lang="${t.altLabel.toLowerCase()}" data-lang-switch="${t.altLabel.toLowerCase()}">${ICONS.globe}${esc(t.altName)}</a>
+    <a class="foot-lang" href="${BASE}${t.altPath}" hreflang="${t.altLabel.toLowerCase()}" lang="${t.altLabel.toLowerCase()}" data-lang-switch="${t.altLabel.toLowerCase()}">${ICONS.globe}${esc(t.altName)}</a>
     <a class="to-top" href="#top" aria-label="${esc(t.footer.top)}">${ICONS.arrowUp}</a>
   </div>
 </footer>`;
@@ -486,8 +492,8 @@ function footer(t) {
 function page(t) {
   const A = t.lang === 'en' ? '../assets' : 'assets';
   const redirect = t.lang === 'es'
-    ? `(function(){try{var q=new URLSearchParams(location.search),f=q.get('hl');var s=f||localStorage.getItem('wg-lang');if(f)localStorage.setItem('wg-lang',f);if(s){if(s==='en')location.replace('/en/'+location.hash);return}var l=(navigator.languages&&navigator.languages[0]||navigator.language||'en').slice(0,2).toLowerCase();if(['es','ca','gl','eu'].indexOf(l)<0)location.replace('/en/'+location.hash)}catch(e){}})();`
-    : `(function(){try{var q=new URLSearchParams(location.search),f=q.get('hl');if(f){localStorage.setItem('wg-lang',f);if(f==='es')location.replace('/'+location.hash);return}if(localStorage.getItem('wg-lang')==='es')location.replace('/'+location.hash)}catch(e){}})();`;
+    ? `(function(){try{var q=new URLSearchParams(location.search),f=q.get('hl');var s=f||localStorage.getItem('wg-lang');if(f)localStorage.setItem('wg-lang',f);if(s){if(s==='en')location.replace('${BASE}/en/'+location.hash);return}var l=(navigator.languages&&navigator.languages[0]||navigator.language||'en').slice(0,2).toLowerCase();if(['es','ca','gl','eu'].indexOf(l)<0)location.replace('${BASE}/en/'+location.hash)}catch(e){}})();`
+    : `(function(){try{var q=new URLSearchParams(location.search),f=q.get('hl');if(f){localStorage.setItem('wg-lang',f);if(f==='es')location.replace('${BASE}/'+location.hash);return}if(localStorage.getItem('wg-lang')==='es')location.replace('${BASE}/'+location.hash)}catch(e){}})();`;
 
   return `<!doctype html>
 <html lang="${t.htmlLang}" class="no-js">
@@ -547,30 +553,33 @@ ${alts}
   </url>
 </urlset>`);
 
-w('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${SITE.domain}/sitemap.xml\n`);
+w('robots.txt', BASE
+  ? 'User-agent: *\nDisallow: /\n'
+  : `User-agent: *\nAllow: /\n\nSitemap: ${SITE.domain}/sitemap.xml\n`);
 
 w('404.html', `<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><title>404 — ${SITE.brand}</title>
 <meta name="robots" content="noindex"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/css/site.css"></head>
+<link rel="icon" href="${BASE}/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="${BASE}/assets/css/site.css"></head>
 <body class="is-404"><main class="wrap nf">
 <h1>404</h1><p>Esta página no existe. / This page does not exist.</p>
-<a class="btn btn-red" href="/">Wave Gods Studio</a>
+<a class="btn btn-red" href="${BASE}/">Wave Gods Studio</a>
 </main></body></html>`);
 
 w('assets/site.webmanifest', JSON.stringify({
   name: SITE.brand, short_name: 'Wave Gods',
   description: LOCALES.es.meta.description,
-  start_url: '/', display: 'standalone',
+  start_url: BASE + '/', display: 'standalone',
   background_color: '#08080A', theme_color: '#08080A',
   icons: [
-    { src: '/assets/img/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
-    { src: '/assets/img/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
-    { src: '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }
+    { src: BASE + '/assets/img/favicon.svg', sizes: 'any', type: 'image/svg+xml' },
+    { src: BASE + '/assets/img/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    { src: BASE + '/assets/img/icon-512.png', sizes: '512x512', type: 'image/png' }
   ]
 }, null, 2));
 
-w('CNAME', 'wavegodsstudio.com\n');
+if (!BASE) w('CNAME', 'wavegodsstudio.com\n');
+else console.log('  · BASE=' + BASE + ': sin CNAME (se sirve desde la subcarpeta)');
 w('.nojekyll', '');
 console.log('Done.');
