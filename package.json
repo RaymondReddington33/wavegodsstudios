@@ -1,0 +1,20 @@
+{
+  "name": "wavegodsstudio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Wave Gods Studio — one-pager bilingue (ES/EN) estatico para GitHub Pages",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "images": "python3 src/images.py",
+    "reels": "python3 src/reels.py",
+    "youtube": "python3 src/youtube.py",
+    "gallery": "python3 src/gallery.py",
+    "og": "python3 src/og.py",
+    "logos": "python3 src/trace_logos.py",
+    "social": "python3 src/reels.py && python3 src/youtube.py && node src/build.mjs",
+    "dev": "node src/build.mjs && python3 -m http.server 4321",
+    "serve": "python3 -m http.server 4321"
+  },
+  "license": "UNLICENSED"
+}
