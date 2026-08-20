@@ -273,8 +273,7 @@ ul,ol{list-style:none}
 .hero-veil::after{
   content:'';position:absolute;inset:0;
   background:
-    linear-gradient(to top,var(--bg) 0%,rgba(8,8,10,.55) 22%,transparent 48%),
-    radial-gradient(120% 80% at 50% 20%,transparent 40%,rgba(8,8,10,.45) 100%)
+    linear-gradient(to top,var(--bg) 0%,rgba(8,8,10,.35) 12%,transparent 30%)
 }
 .hero-wave{
   position:relative;z-index:1;display:block;width:100%;
@@ -283,7 +282,7 @@ ul,ol{list-style:none}
   mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)
 }
 
-.hero-body{position:relative;z-index:1;margin-top:-2.5rem;padding-bottom:1.75rem}
+.hero-body{position:relative;z-index:1;margin-top:.25rem;padding-bottom:1.75rem}
 .hero-title{
   font-family:var(--display);font-weight:800;font-size:clamp(2.9rem,13.5vw,4.6rem);line-height:.88;
   letter-spacing:-.05em;margin-bottom:1.25rem
@@ -800,6 +799,90 @@ ul,ol{list-style:none}
 .hero-body .wrap > .hero-rate{animation-delay:.8s}
 @keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .no-js .hero-body .wrap > *{opacity:1;animation:none}
+
+/* ============================ 16b. MÓVIL: todo centrado y simétrico ===== */
+@media (max-width:639px){
+  /* -- textos y encabezados -- */
+  .sec-head,.sec-lead,.room-bar,.panel-main p,.mnote,.reels-side p,.foot-brand p{text-align:center}
+  .sec-head{margin-inline:auto}
+  .eyebrow,.gear-label,.plats-label,.wall-note,.panel-tag,.mtag,.faq-t,.foot-col h4{justify-content:center;text-align:center}
+  .eyebrow{display:flex}
+  .sec-lead,.panel-main p,.reels-side p{margin-inline:auto}
+
+  /* -- hero -- */
+  .hero-body .wrap{display:grid;justify-items:center;text-align:center}
+  .hero-title{max-width:none}
+  .hero-lead{max-width:34ch}
+  .hero-cta{justify-content:center;width:100%}
+  .hero-cta .btn{flex:1 1 100%}
+  .hero-rate{justify-items:center;text-align:center;max-width:100%}
+  .hr-top{justify-content:center}
+  .hr-i q,.hr-i i{text-align:center}
+  .hero-plats-in{text-align:center}
+  .plats-row{justify-content:center}
+
+  /* -- medios -- */
+  .mhead{justify-content:center;text-align:center}
+  .mhead h3{width:100%}
+  .mlink{margin-left:0}
+  .yt-now{justify-items:center;text-align:center}
+  .yt-list button{text-align:left}
+
+  /* -- punk -- */
+  .punk-body{text-align:center}
+  .punk-title{transform:rotate(-1.6deg);transform-origin:center}
+  .punk-sub{margin-inline:auto}
+  .punk-stamp{margin-inline:auto}
+
+  /* -- servicios: tarjeta centrada en vez de fila -- */
+  .svc{
+    grid-template-columns:1fr;grid-template-areas:'th' 'n' 't' 'd';
+    justify-items:center;text-align:center;gap:.5rem;padding:1.5rem 0
+  }
+  .svc-thumb{width:64px;height:64px;border-radius:12px}
+  .svc-go{display:none}
+  .svc-d{max-width:32ch}
+
+  /* -- estudio -- */
+  .room-ghost{
+    position:static;display:block;text-align:center;margin-bottom:.35rem;
+    font-size:clamp(2.6rem,17vw,4.5rem);-webkit-text-stroke-width:1px
+  }
+  .studio-quote{margin-inline:auto;text-align:center;max-width:26ch}
+  .room-meta{justify-content:center}
+  .wall{scroll-snap-type:x mandatory}
+  .piece{max-width:82vw}
+  .cartela{
+    grid-template-columns:1fr;justify-items:center;text-align:center;
+    margin-inline:auto;max-width:100%;row-gap:.15rem
+  }
+  .cartela b{grid-row:auto}
+  .panel{justify-items:center;text-align:center}
+  .panel-main{display:grid;justify-items:center}
+  .feats{justify-items:center;width:100%}
+  .feats li{justify-content:flex-start;text-align:left;max-width:26ch;width:100%;margin-inline:auto}
+  .studio-hl{text-align:center;width:100%}
+  .studio-hl p{margin-inline:auto}
+
+  /* -- contacto -- */
+  .field label{text-align:center}
+  .field input,.field textarea{text-align:center}
+  .field input::placeholder,.field textarea::placeholder{text-align:center}
+  .select select{text-align:center;text-align-last:center;padding-inline:2.5rem}
+  .qa summary{padding-left:22px;text-align:center}
+  .qa summary span{flex:1}
+  .qa-body{text-align:center;margin-inline:auto}
+
+  /* -- pie -- */
+  .foot-in{justify-items:center;text-align:center}
+  .foot-brand{display:grid;justify-items:center}
+  .foot-social{justify-content:center}
+  .foot-col{width:100%}
+  .foot-col ul{justify-items:center}
+  .foot-bar{grid-template-columns:1fr;justify-items:center;text-align:center}
+  .foot-bar .foot-lang{justify-self:center}
+  .logo-foot{justify-content:center}
+}
 
 /* ================================================ 17. reduced motion ==== */
 @media (prefers-reduced-motion:reduce){
